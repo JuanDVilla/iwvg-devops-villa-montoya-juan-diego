@@ -53,10 +53,10 @@ jobs:
 
       - name: 📊 Sonar Analysis
         run: >
-          mvn -B sonar:sonar 
-          -Dsonar.projectKey=miw-upm-github_${{ env.ARTIFACT }}
-          -Dsonar.organization=miw-upm-github 
-          -Dsonar.host.url=https://sonarcloud.io 
+          mvn -B sonar:sonar
+          -Dsonar.projectKey=juandvilla1998_${{ env.ARTIFACT }}
+          -Dsonar.organization=juandvilla1998
+          -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
