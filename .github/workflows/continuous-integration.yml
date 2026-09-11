@@ -41,8 +41,21 @@ jobs:
         if: failure()
         uses: 8398a7/action-slack@v3
         with:
-          status: ${{ job.status }}
-          fields: repo,author,commit,author,workflow,
+          payload: |
+            {
+              "text": "🚨 *¡Fallo en la Integración Continua!*\n*Repositorio:* ${{ github.repository }}\n*Rama:* ${{ github.ref_name }}\n*Autor:* ${{ github.actor }}\n*Commit:* ${{ github.sha }}\n*Estado:* La compilación o las pruebas han fallado. Revisen los logs en GitHub Actions."
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: 🔔 Notify Slack on success
+        if: success()
+        uses: 8398a7/action-slack@v3
+        with:
+          payload: |
+            {
+              "text": "✅ *¡Integración Continua Exitosa!*\n*Repositorio:* ${{ github.repository }}\n*Rama:* ${{ github.ref_name }}\n*Autor:* ${{ github.actor }}\n*Commit:* ${{ github.sha }}\n*Estado:* La API Spring Boot ha sido compilada y validada correctamente con las pruebas de Maven."
+            }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
