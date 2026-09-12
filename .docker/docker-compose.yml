@@ -1,6 +1,9 @@
+name: iwvg-devops-villa-montoya-juan-diego
 services:
   devops:
-    build: .
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
     image: devops:latest
     restart: always
     ports:
