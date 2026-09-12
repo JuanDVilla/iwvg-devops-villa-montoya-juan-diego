@@ -12,7 +12,7 @@
 
     <groupId>es.upm.miw</groupId>
     <artifactId>iwvg-devops-villa-montoya-juan-diego</artifactId>
-    <version>6.0.0-RC1</version>
+    <version>6.0.22</version>
     <packaging>jar</packaging>
     <name>${project.groupId}.${project.artifactId}</name>
     <url>http://github.com/JuanDVilla/${project.artifactId}</url>
