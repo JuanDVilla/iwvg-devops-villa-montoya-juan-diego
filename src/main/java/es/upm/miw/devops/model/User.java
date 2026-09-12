@@ -20,7 +20,7 @@ public class User {
     private String city;
     private String province;
     private String postalCode;
-    private String billable;
+    private Boolean active;
 
     public User() {
     }
@@ -89,11 +89,11 @@ public class User {
         this.postalCode = postalCode;
     }
 
-    public String getBillable() {
-        return billable;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setBillable(String billable) {
-        this.billable = billable;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
