@@ -2,17 +2,17 @@
 ## Ingeniería Web: Visión General (IWVG) DevOps
 > Este proyecto es un apoyo docente de la asignatura. Cada release liberada corresponde al código utilizado en clase del curso indicado
 
-[![GitHub](https://img.shields.io/github/license/miw-upm/iwvg-devops?color=informational)](https://github.com/miw-upm/iwvg-devops/blob/develop/LICENSE.md)
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/miw-upm/iwvg-devops?color=informational)](https://github.com/miw-upm/iwvg-devops/releases)
-![GitHub Release Date](https://img.shields.io/github/release-date/miw-upm/iwvg-devops?color=informational)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/miw-upm/iwvg-devops)
-![GitHub issues](https://img.shields.io/github/issues/miw-upm/iwvg-devops?color=important)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/miw-upm/iwvg-devops?color=informational)
+<!-- [![GitHub](https://img.shields.io/github/license/miw-upm/iwvg-devops?color=informational)](https://github.com/miw-upm/iwvg-devops/blob/develop/LICENSE.md) -->
+<!-- [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/miw-upm/iwvg-devops?color=informational)](https://github.com/miw-upm/iwvg-devops/releases) -->
+<!-- ![GitHub Release Date](https://img.shields.io/github/release-date/miw-upm/iwvg-devops?color=informational) -->
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/JuanDVilla/iwvg-devops-villa-montoya-juan-diego)
+![GitHub issues](https://img.shields.io/github/issues/JuanDVilla/iwvg-devops-villa-montoya-juan-diego?color=important)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/JuanDVilla/iwvg-devops-villa-montoya-juan-diego?color=informational)
 
 ### Estado del código
-[![DevOps](https://github.com/miw-upm/iwvg-devops/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/miw-upm/iwvg-devops/actions/workflows/continuous-integration.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=es.upm.miw%3Aiwvg-devops&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=es.upm.miw%3Aiwvg-devops)
-[![Render broken](https://iwvg-devops-latest.onrender.com/version-badge)](https://iwvg-devops-latest.onrender.com/swagger-ui.html)
+[![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/continuous-integration.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=JuanDVilla_iwvg-devops-villa-montoya-juan-diego&metric=alert_status)](https://sonarcloud.io/project/overview?id=JuanDVilla_iwvg-devops-villa-montoya-juan-diego)
+<!-- [![Render broken](https://iwvg-devops-latest.onrender.com/version-badge)](https://iwvg-devops-latest.onrender.com/swagger-ui.html) -->
 
 
 ### Tecnologías necesarias
