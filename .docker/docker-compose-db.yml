@@ -1,0 +1,40 @@
+services:
+
+  mysql:
+    image: mysql:8.4
+    container_name: mysql-server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db-master
+      MYSQL_USER: master
+      MYSQL_PASSWORD: master
+    ports:
+      - "3312:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - master
+
+volumes:
+  mysql_data:
+    name: "mysql-data"
+
+networks:
+  master:
+    external: true
+
+# Construir todas las BD
+#> docker compose -f docker-compose-db.yml -p databases up -d
+
+# CONSOLA & COMANDOS MySQL
+#> docker exec -it mysql-server mysql -u root -p
+#  show databases;
+#  create database poo;
+#  drop database poo;
+#  use poo;
+#  show tables;
+#  describe mytable;
+#  select * from mytable;
+#  drop table mytable;
+#  exit
