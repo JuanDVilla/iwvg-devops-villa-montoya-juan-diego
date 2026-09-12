@@ -25,7 +25,8 @@ networks:
     external: true
 
 # Construir todas las BD
-#> docker compose -f docker-compose-db.yml -p databases up -d
+#En la Raiz del proyecto
+#> docker compose -f .docker/docker-compose-db.yml -p databases up -d
 
 # CONSOLA & COMANDOS MySQL
 #> docker exec -it mysql-server mysql -u root -p

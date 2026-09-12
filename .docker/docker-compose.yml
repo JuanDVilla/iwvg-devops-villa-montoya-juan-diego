@@ -20,4 +20,6 @@ networks:
   master:
     external: true
 
+#en la raiz del proyecto
+#cd .docker
 #> docker compose up --build -d
