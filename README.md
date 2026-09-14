@@ -11,7 +11,7 @@
 
 ### Estado del código
 [![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/continuous-integration.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=JuanDVilla_iwvg-devops-villa-montoya-juan-diego&metric=alert_status)](https://sonarcloud.io/project/overview?id=JuanDVilla_iwvg-devops-villa-montoya-juan-diego)
+[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=juandvilla1998_iwvg-devops-villa-montoya-juan-diego&metric=alert_status&token=7cb304e7173c65cf08304e7b2e565fbd2c15f5f4)](https://sonarcloud.io/summary/new_code?id=juandvilla1998_iwvg-devops-villa-montoya-juan-diego)
 <!-- [![Render broken](https://iwvg-devops-latest.onrender.com/version-badge)](https://iwvg-devops-latest.onrender.com/swagger-ui.html) -->
 
 
