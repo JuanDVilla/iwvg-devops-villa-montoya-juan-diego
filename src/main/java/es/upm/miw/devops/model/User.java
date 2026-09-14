@@ -1,10 +1,14 @@
 package es.upm.miw.devops.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "users")
@@ -15,6 +19,7 @@ public class User {
     private Long id;
     private String firstName;
     private String familyName;
+    private String identity;
     private String email;
     private String address;
     private String city;
@@ -47,6 +52,14 @@ public class User {
 
     public void setFamilyName(String familyName) {
         this.familyName = familyName;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
 
     public String getEmail() {
@@ -95,5 +108,18 @@ public class User {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    @Transient
+    @JsonProperty("billable")
+    public boolean isBillable() {
+        return StringUtils.hasText(this.firstName) &&
+                StringUtils.hasText(this.familyName) &&
+                StringUtils.hasText(this.email) &&
+                StringUtils.hasText(this.identity) &&
+                StringUtils.hasText(this.address) &&
+                StringUtils.hasText(this.city) &&
+                StringUtils.hasText(this.province) &&
+                StringUtils.hasText(this.postalCode);
     }
 }
