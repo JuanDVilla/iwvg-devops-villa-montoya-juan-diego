@@ -51,6 +51,10 @@ class UserResourceTest {
         sampleUser.setActive(true);
     }
 
+    // ==========================================
+    // PRUEBAS GET /user/{id}
+    // ==========================================
+
     @Test
     void testGetUserSuccess() throws Exception {
         when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
@@ -71,6 +75,10 @@ class UserResourceTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Usuario no encontrado"));
     }
+
+    // ==========================================
+    // PRUEBAS DELETE /user/{id}
+    // ==========================================
 
     @Test
     void testDeleteUserSuccess() throws Exception {
@@ -93,6 +101,70 @@ class UserResourceTest {
 
         verify(userRepository, never()).deleteById(anyLong());
     }
+
+    // ==========================================
+    // PRUEBAS PUT /user/{id} (Actualización Completa)
+    // ==========================================
+
+    @Test
+    void testUpdateUserSuccess() throws Exception {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        String updateJson = """
+                {
+                    "firstName": "Carlos",
+                    "familyName": "Gómez",
+                    "identity": "87654321X",
+                    "email": "carlos@example.com",
+                    "address": "Avenida 456",
+                    "city": "Barcelona",
+                    "province": "Barcelona",
+                    "postalCode": "08001",
+                    "active": false
+                }
+                """;
+
+        mockMvc.perform(put("/user/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updateJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.firstName").value("Carlos"))
+                .andExpect(jsonPath("$.familyName").value("Gómez"))
+                .andExpect(jsonPath("$.identity").value("87654321X"))
+                .andExpect(jsonPath("$.email").value("carlos@example.com"))
+                .andExpect(jsonPath("$.city").value("Barcelona"))
+                .andExpect(jsonPath("$.active").value(false))
+                .andExpect(jsonPath("$.billable").value(true));
+
+        verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void testUpdateUserNotFound() throws Exception {
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+
+        String updateJson = """
+                {
+                    "firstName": "Carlos",
+                    "familyName": "Gómez",
+                    "email": "carlos@example.com"
+                }
+                """;
+
+        mockMvc.perform(put("/user/99")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updateJson))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Usuario no encontrado"));
+
+        verify(userRepository, never()).save(any());
+    }
+
+    // ==========================================
+    // PRUEBAS PUT /user/{id}/active
+    // ==========================================
 
     @Test
     void testUpdateActiveStatusSuccess() throws Exception {
@@ -134,6 +206,42 @@ class UserResourceTest {
                 .content(jsonBody))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Usuario no encontrado"));
+
+        verify(userRepository, never()).save(any());
+    }
+
+    // ==========================================
+    // PRUEBAS PATCH /user (Actualización en Lote)
+    // ==========================================
+
+    @Test
+    void testUpdateUsersActiveStatusBatchSuccess() throws Exception {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
+
+        String batchJson = """
+                [
+                    {"id": 1, "active": false}
+                ]
+                """;
+
+        mockMvc.perform(patch("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(batchJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Usuarios actualizados correctamente"));
+
+        verify(userRepository, times(1)).save(sampleUser);
+    }
+
+    @Test
+    void testUpdateUsersActiveStatusBatchEmptyList() throws Exception {
+        String emptyBatchJson = "[]";
+
+        mockMvc.perform(patch("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(emptyBatchJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("La lista de actualizaciones no puede estar vacía"));
 
         verify(userRepository, never()).save(any());
     }
