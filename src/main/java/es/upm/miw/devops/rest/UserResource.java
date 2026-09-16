@@ -1,5 +1,6 @@
 package es.upm.miw.devops.rest;
 
+import es.upm.miw.devops.model.User;
 import es.upm.miw.devops.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +44,29 @@ public class UserResource {
         return ResponseEntity.ok(Map.of(MESSAGE, "Usuario eliminado"));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody User user) {
+        return userRepository.findById(id)
+                .map(existingUser -> {
+                    existingUser.setFirstName(user.getFirstName());
+                    existingUser.setFamilyName(user.getFamilyName());
+                    existingUser.setIdentity(user.getIdentity());
+                    existingUser.setEmail(user.getEmail());
+                    existingUser.setAddress(user.getAddress());
+                    existingUser.setCity(user.getCity());
+                    existingUser.setProvince(user.getProvince());
+                    existingUser.setPostalCode(user.getPostalCode());
+                    existingUser.setActive(user.getActive());
+
+                    User updatedUser = userRepository.save(existingUser);
+                    return ResponseEntity.ok((Object) updatedUser);
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of(MESSAGE, "Usuario no encontrado")));
+    }
+
     @PutMapping("/{id}/active")
     public ResponseEntity<Object> updateActiveStatus(@PathVariable Long id, @RequestBody Map<String, Boolean> body) {
-        // Validamos que el body contenga la clave 'active'
         if (body == null || !body.containsKey("active")) {
             return ResponseEntity.badRequest()
                     .body(Map.of(MESSAGE, "Formato incorrecto. Se esperaba {'active': true/false}"));
@@ -53,11 +74,7 @@ public class UserResource {
 
         return userRepository.findById(id)
                 .map(user -> {
-                    // Actualizamos el estado.
-                    // NOTA: Asumo que tu entidad User tiene un método setter llamado setActive()
                     user.setActive(body.get("active"));
-
-                    // Guardamos los cambios en la base de datos
                     userRepository.save(user);
 
                     return ResponseEntity
