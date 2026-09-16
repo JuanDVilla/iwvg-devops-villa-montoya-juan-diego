@@ -1,5 +1,6 @@
 package es.upm.miw.devops.rest;
 
+import es.upm.miw.devops.model.Role;
 import es.upm.miw.devops.model.User;
 import es.upm.miw.devops.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +50,7 @@ class UserResourceTest {
         sampleUser.setProvince("Madrid");
         sampleUser.setPostalCode("28001");
         sampleUser.setActive(true);
+        sampleUser.setRole(Role.OPERATOR);
     }
 
     // ==========================================
@@ -121,7 +123,8 @@ class UserResourceTest {
                     "city": "Barcelona",
                     "province": "Barcelona",
                     "postalCode": "08001",
-                    "active": false
+                    "active": false,
+                    "role": "OPERATOR"
                 }
                 """;
 
@@ -211,7 +214,7 @@ class UserResourceTest {
     }
 
     // ==========================================
-    // PRUEBAS PATCH /user (Actualización en Lote)
+    // PRUEBAS PATCH /user (Actualización en Lote + Validaciones de Rol)
     // ==========================================
 
     @Test
@@ -244,5 +247,55 @@ class UserResourceTest {
                 .andExpect(jsonPath("$.message").value("La lista de actualizaciones no puede estar vacía"));
 
         verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    void testUpdateUsersActiveStatusBatchAdminDeactivationForbidden() throws Exception {
+        User adminUser = new User();
+        adminUser.setId(2L);
+        adminUser.setFirstName("Admin");
+        adminUser.setRole(Role.ADMIN);
+        adminUser.setActive(true);
+
+        when(userRepository.findById(2L)).thenReturn(Optional.of(adminUser));
+
+        String batchJson = """
+                [
+                    {"id": 2, "active": false}
+                ]
+                """;
+
+        mockMvc.perform(patch("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(batchJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("No se puede desactivar a un usuario con rol ADMIN (ID: 2)"));
+
+        verify(userRepository, never()).save(adminUser);
+    }
+
+    @Test
+    void testUpdateUsersActiveStatusBatchAdminActivationSuccess() throws Exception {
+        User adminUser = new User();
+        adminUser.setId(2L);
+        adminUser.setFirstName("Admin");
+        adminUser.setRole(Role.ADMIN);
+        adminUser.setActive(false);
+
+        when(userRepository.findById(2L)).thenReturn(Optional.of(adminUser));
+
+        String batchJson = """
+                [
+                    {"id": 2, "active": true}
+                ]
+                """;
+
+        mockMvc.perform(patch("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(batchJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Usuarios actualizados correctamente"));
+
+        verify(userRepository, times(1)).save(adminUser);
     }
 }
