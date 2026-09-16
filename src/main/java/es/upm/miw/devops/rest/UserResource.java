@@ -1,6 +1,7 @@
 package es.upm.miw.devops.rest;
 
 import es.upm.miw.devops.model.User;
+import java.util.Optional;
 import es.upm.miw.devops.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,15 +97,33 @@ public class UserResource {
                     .body(Map.of(MESSAGE, "La lista de actualizaciones no puede estar vacía"));
         }
 
-        updates.forEach(update -> {
+        for (UserActiveDto update : updates) {
             if (update.id() != null && update.active() != null) {
-                userRepository.findById(update.id()).ifPresent(user -> {
+                Optional<User> userOpt = userRepository.findById(update.id());
+
+                if (userOpt.isPresent()) {
+                    User user = userOpt.get();
+
+                    // Validación: No se permite desactivar (active = false) a un usuario ADMIN
+                    boolean isAttemptingDeactivation = Boolean.FALSE.equals(update.active());
+                    boolean isAdmin = isAdminUser(user);
+
+                    if (isAttemptingDeactivation && isAdmin) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                .body(Map.of(MESSAGE, "No se puede desactivar a un usuario con rol ADMIN (ID: "
+                                        + user.getId() + ")"));
+                    }
+
                     user.setActive(update.active());
                     userRepository.save(user);
-                });
+                }
             }
-        });
+        }
 
         return ResponseEntity.ok(Map.of(MESSAGE, "Usuarios actualizados correctamente"));
+    }
+
+    private boolean isAdminUser(User user) {
+        return user.getRole() != null && "ADMIN".equalsIgnoreCase(user.getRole().toString());
     }
 }
