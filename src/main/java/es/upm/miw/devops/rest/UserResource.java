@@ -32,6 +32,18 @@ public class UserResource {
     public record UserActiveDto(Long id, Boolean active) {
     }
 
+    public record UserUpdateDto(
+            String firstName,
+            String familyName,
+            String identity,
+            String email,
+            String address,
+            String city,
+            String province,
+            String postalCode,
+            Boolean active) {
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUser(@PathVariable Long id) {
         return userRepository.findById(id)
@@ -51,18 +63,19 @@ public class UserResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody UserUpdateDto userDto) {
         return userRepository.findById(id)
                 .map(existingUser -> {
-                    existingUser.setFirstName(user.getFirstName());
-                    existingUser.setFamilyName(user.getFamilyName());
-                    existingUser.setIdentity(user.getIdentity());
-                    existingUser.setEmail(user.getEmail());
-                    existingUser.setAddress(user.getAddress());
-                    existingUser.setCity(user.getCity());
-                    existingUser.setProvince(user.getProvince());
-                    existingUser.setPostalCode(user.getPostalCode());
-                    existingUser.setActive(user.getActive());
+                    // Mapeamos los datos del DTO a la entidad
+                    existingUser.setFirstName(userDto.firstName());
+                    existingUser.setFamilyName(userDto.familyName());
+                    existingUser.setIdentity(userDto.identity());
+                    existingUser.setEmail(userDto.email());
+                    existingUser.setAddress(userDto.address());
+                    existingUser.setCity(userDto.city());
+                    existingUser.setProvince(userDto.province());
+                    existingUser.setPostalCode(userDto.postalCode());
+                    existingUser.setActive(userDto.active());
 
                     User updatedUser = userRepository.save(existingUser);
                     return ResponseEntity.ok((Object) updatedUser);
