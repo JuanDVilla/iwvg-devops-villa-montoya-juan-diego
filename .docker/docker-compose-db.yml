@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: master
+      MYSQL_DATABASE: master_z8ur
       MYSQL_USER: master
       MYSQL_PASSWORD: master
     ports:
@@ -23,7 +23,7 @@ services:
     environment:
       POSTGRES_USER: master
       POSTGRES_PASSWORD: master
-      POSTGRES_DB: master
+      POSTGRES_DB: master_z8ur
     ports:
       - "5432:5432"
     volumes:
