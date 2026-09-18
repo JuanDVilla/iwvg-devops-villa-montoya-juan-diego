@@ -16,9 +16,26 @@ services:
     networks:
       - master
 
+  postgres:
+    image: postgres:15.10
+    container_name: postgres-server
+    restart: always
+    environment:
+      POSTGRES_USER: master
+      POSTGRES_PASSWORD: master
+      POSTGRES_DB: dbmaster
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - master
+
 volumes:
   mysql_data:
     name: "mysql-data"
+  postgres_data:
+    name: "postgres-data"
 
 networks:
   master:
