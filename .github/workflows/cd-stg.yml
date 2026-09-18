@@ -51,8 +51,11 @@ jobs:
             ${{ env.GHCR_URL }}/${{ env.REPO_LOWER }}:latest
 
       - name: 🚀 Deploy on Render
+        env:
+          RENDER_DEPLOY_HOOK_TOKEN: ${{ secrets.RENDER_DEPLOY_HOOK_TOKEN }}
         run: |
-          curl --fail -X POST "https://api.render.com/deploy/${{ secrets.RENDER_DEPLOY_HOOK_TOKEN }}" \
+          # Y luego llamarla usando la sintaxis normal de bash
+          curl --fail -X POST "https://api.render.com/deploy/${RENDER_DEPLOY_HOOK_TOKEN}" \
           && echo "✅ Deployment succeeded" \
           || (echo "❌ Deployment failed" && exit 1)
 
@@ -67,7 +70,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: 🔔 Notify Slack on success
+      - name: 🔔 Notify Slack on failure
         if: failure()
         uses: slackapi/slack-github-action@v1.26.0
         with:
