@@ -12,7 +12,7 @@
 ### Estado del código
 [![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/ci.yml)
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=juandvilla1998_iwvg-devops-villa-montoya-juan-diego&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=juandvilla1998_iwvg-devops-villa-montoya-juan-diego)
-[![Render Status](https://img.shields.io/website?url=https%3A%2F%2FTU-APP.onrender.com&up_message=online&down_message=offline&style=flat-square&label=Render)](https://iwvg-devops-villa-montoya-juan-diego.onrender.com)
+[![Render Status](https://img.shields.io/website?url=https://iwvg-devops-villa-montoya-juan-diego.onrender.com/swagger-ui.html&up_message=online&down_message=offline&style=flat-square&label=Render)](https://iwvg-devops-villa-montoya-juan-diego.onrender.com/swagger-ui.html)
 
 
 ### Tecnologías necesarias
