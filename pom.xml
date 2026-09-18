@@ -78,6 +78,11 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!-- Actuator -->
         <!-- http://localhost:8080/actuator/info   -->
         <!-- http://localhost:8080/actuator/health -->

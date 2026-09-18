@@ -3,14 +3,21 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3312/db-master
+    url: jdbc:postgresql://postgres:5432/master_z8ur
+    # url: jdbc:mysql://localhost:3312/master_z8ur
     username: master
     password: master
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
+    # driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
+    defer-datasource-initialization: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: always
