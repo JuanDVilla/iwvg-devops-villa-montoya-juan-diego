@@ -11,9 +11,6 @@ services:
     environment:
       # SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/master_z8ur
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/master_z8ur
-      SPRING_DATASOURCE_USERNAME: master
-      SPRING_DATASOURCE_PASSWORD: master
-      SPRING_PROFILES_ACTIVE: dev
     networks:
       - master
 

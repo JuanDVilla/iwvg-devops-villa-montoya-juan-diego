@@ -10,9 +10,9 @@
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/JuanDVilla/iwvg-devops-villa-montoya-juan-diego?color=informational)
 
 ### Estado del código
-[![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/continuous-integration.yml)
-[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=juandvilla1998_iwvg-devops-villa-montoya-juan-diego&metric=alert_status&token=7cb304e7173c65cf08304e7b2e565fbd2c15f5f4)](https://sonarcloud.io/summary/new_code?id=juandvilla1998_iwvg-devops-villa-montoya-juan-diego)
-<!-- [![Render broken](https://iwvg-devops-latest.onrender.com/version-badge)](https://iwvg-devops-latest.onrender.com/swagger-ui.html) -->
+[![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/ci.yml)
+[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=juandvilla1998_iwvg-devops-villa-montoya-juan-diego&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=juandvilla1998_iwvg-devops-villa-montoya-juan-diego)
+[![Render Status](https://img.shields.io/website?url=https%3A%2F%2FTU-APP.onrender.com&up_message=online&down_message=offline&style=flat-square&label=Render)](https://iwvg-devops-villa-montoya-juan-diego.onrender.com)
 
 
 ### Tecnologías necesarias
