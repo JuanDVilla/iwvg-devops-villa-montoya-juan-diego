@@ -15,6 +15,8 @@ public class UserSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
 
+    private static final Random RANDOM = new Random();
+
     public UserSeeder(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -25,7 +27,7 @@ public class UserSeeder implements CommandLineRunner {
             System.out.println("Iniciando el seeder: Generando 50 usuarios...");
 
             List<User> usersToSave = new ArrayList<>();
-            Random random = new Random();
+            // 2. Se elimina la línea: Random random = new Random();
 
             String[] firstNames = { "Alejandro", "María", "David", "Carmen", "Daniel", "Ana", "Javier", "Laura", "José",
                     "Isabel", "Elena", "Carlos", "Marta", "Manuel", "Lucía" };
@@ -42,19 +44,19 @@ public class UserSeeder implements CommandLineRunner {
             String dniLetters = "TRWAGMYFPDXBNJZSQVHLCKE";
 
             for (int i = 1; i <= 50; i++) {
-                String fname = firstNames[random.nextInt(firstNames.length)];
-                String lname = familyNames[random.nextInt(familyNames.length)];
+                // 3. Cambiar 'random' por la constante 'RANDOM' en todo el bucle
+                String fname = firstNames[RANDOM.nextInt(firstNames.length)];
+                String lname = familyNames[RANDOM.nextInt(familyNames.length)];
 
-                int dniNum = 10000000 + random.nextInt(90000000);
+                int dniNum = 10000000 + RANDOM.nextInt(90000000);
                 String identity = dniNum + String.valueOf(dniLetters.charAt(dniNum % 23));
 
                 String email = fname.toLowerCase() + "." + lname.toLowerCase() + i + "@ejemplo.com";
-                String address = streets[random.nextInt(streets.length)] + " " + (random.nextInt(150) + 1);
-                String[] loc = locations[random.nextInt(locations.length)];
+                String address = streets[RANDOM.nextInt(streets.length)] + " " + (RANDOM.nextInt(150) + 1);
+                String[] loc = locations[RANDOM.nextInt(locations.length)];
 
-                boolean active = random.nextDouble() > 0.1;
+                boolean active = RANDOM.nextDouble() > 0.1;
 
-                // Asignación usando el enumerador Role
                 Role userRole;
                 if (i <= 3) {
                     userRole = Role.ADMIN;
