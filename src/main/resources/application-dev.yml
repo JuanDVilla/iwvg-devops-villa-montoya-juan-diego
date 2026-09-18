@@ -3,12 +3,12 @@ server:
 
 spring:
   datasource:
-    # url: jdbc:postgresql://localhost:5432/dbmaster
-    url: jdbc:mysql://localhost:3312/db-master
+    url: jdbc:postgresql://postgres:5432/master
+    # url: jdbc:mysql://localhost:3312/master
     username: master
     password: master
-    # driver-class-name: org.postgresql.Driver
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
+    # driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,4 +16,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    # database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
