@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: 🚀 Deploy PostgreSQL to Lightsail via SSH
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@0e0a58332155fdd88d01d41d1a1087d19299e525
         env:
           CONTAINER_NAME: ${{ env.DB_DOCKER }}
         with:
@@ -41,7 +41,6 @@ jobs:
             echo "⏳ Esperando a que PostgreSQL inicie..."
             sleep 10
 
-            # Verificar que el contenedor esté corriendo
             STATUS=$(docker inspect --format='{{.State.Status}}' $CONTAINER_NAME 2>/dev/null)
             if [ "$STATUS" != "running" ]; then
               echo "❌ Fallo al iniciar PostgreSQL"
@@ -53,7 +52,7 @@ jobs:
 
       - name: 🔔 Notify Slack on success
         if: success()
-        uses: slackapi/slack-github-action@v1.26.0
+        uses: slackapi/slack-github-action@6c661ce319f7388b70819307c5174031d102b484
         with:
           payload: |
             {
@@ -64,7 +63,7 @@ jobs:
 
       - name: 🔔 Notify Slack on failure
         if: failure()
-        uses: slackapi/slack-github-action@v1.26.0
+        uses: slackapi/slack-github-action@6c661ce319f7388b70819307c5174031d102b484
         with:
           payload: |
             {
