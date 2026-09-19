@@ -20,6 +20,6 @@ COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 
 HEALTHCHECK --interval=120s --timeout=5s --start-period=60s --retries=3 \
-    CMD wget -qO- http://localhost:8080/actuator/health || exit 1
+    CMD wget -qO- http://localhost:10000/actuator/health || exit 1
 
 CMD ["java", "-jar", "app.jar"]
