@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: 🚀 Deploy PostgreSQL to Lightsail via SSH
-        uses: appleboy/ssh-action@0e0a58332155fdd88d01d41d1a1087d19299e525
+        uses: appleboy/ssh-action@7eaf76671a0d7e000938db51f49b10c9c7336f32
         env:
           CONTAINER_NAME: ${{ env.DB_DOCKER }}
         with:

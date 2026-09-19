@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
 
       - name: ☕ Set up Java
-        uses: actions/setup-java@3a4e6d328325a7eb8e47f5a8c20f1be0613203f1
+        uses: actions/setup-java@706542d1033282f6a73c09192408e0cb20141cc1
         with:
           distribution: temurin
           java-version: 21
@@ -49,7 +49,7 @@ jobs:
             ${{ env.GHCR_URL }}/${{ env.REPO_LOWER }}:latest
 
       - name: 🚀 Deploy to Lightsail Server via SSH
-        uses: appleboy/ssh-action@0e0a58332155fdd88d01d41d1a1087d19299e525
+        uses: appleboy/ssh-action@7eaf76671a0d7e000938db51f49b10c9c7336f32
         env:
           ARTIFACT_NAME: ${{ env.ARTIFACT }}
           REPO_NAME: ${{ env.REPO_LOWER }}
@@ -98,7 +98,7 @@ jobs:
 
       - name: 🔔 Notify Slack on success
         if: success()
-        uses: slackapi/slack-github-action@6c661ce319f7388b70819307c5174031d102b484
+        uses: slackapi/slack-github-action@701167a721245643a6d45f78c800c191cb88f28c
         with:
           payload: |
             {
@@ -109,7 +109,7 @@ jobs:
 
       - name: 🔔 Notify Slack on failure
         if: failure()
-        uses: slackapi/slack-github-action@6c661ce319f7388b70819307c5174031d102b484
+        uses: slackapi/slack-github-action@701167a721245643a6d45f78c800c191cb88f28c
         with:
           payload: |
             {
