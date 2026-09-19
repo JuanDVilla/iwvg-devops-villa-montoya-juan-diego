@@ -1,21 +1,22 @@
 package es.upm.miw.devops.rest;
 
 import es.upm.miw.devops.model.User;
-import java.util.Optional;
 import es.upm.miw.devops.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -42,6 +43,19 @@ public class UserResource {
             String province,
             String postalCode,
             Boolean active) {
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) Boolean billable) {
+        List<User> users = userRepository.findAll();
+
+        if (billable != null) {
+            users = users.stream()
+                    .filter(user -> user.isBillable() == billable)
+                    .toList();
+        }
+
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
