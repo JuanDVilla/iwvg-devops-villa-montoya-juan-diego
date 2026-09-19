@@ -2,17 +2,20 @@
 ## Ingeniería Web: Visión General (IWVG) DevOps
 > Este proyecto es un apoyo docente de la asignatura. Cada release liberada corresponde al código utilizado en clase del curso indicado
 
-<!-- [![GitHub](https://img.shields.io/github/license/miw-upm/iwvg-devops?color=informational)](https://github.com/miw-upm/iwvg-devops/blob/develop/LICENSE.md) -->
-<!-- [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/miw-upm/iwvg-devops?color=informational)](https://github.com/miw-upm/iwvg-devops/releases) -->
-<!-- ![GitHub Release Date](https://img.shields.io/github/release-date/miw-upm/iwvg-devops?color=informational) -->
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/JuanDVilla/iwvg-devops-villa-montoya-juan-diego?color=informational)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/releases)
+![GitHub Release Date](https://img.shields.io/github/release-date/JuanDVilla/iwvg-devops-villa-montoya-juan-diego?color=informational)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/JuanDVilla/iwvg-devops-villa-montoya-juan-diego)
 ![GitHub issues](https://img.shields.io/github/issues/JuanDVilla/iwvg-devops-villa-montoya-juan-diego?color=important)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/JuanDVilla/iwvg-devops-villa-montoya-juan-diego?color=informational)
 
 ### Estado del código
 [![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/ci.yml)
+[![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/cd-stg.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/cd-stg.yml)
+[![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/cd-prod.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/cd-prod.yml)
+[![DevOps](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/cd-db-prod.yml/badge.svg)](https://github.com/JuanDVilla/iwvg-devops-villa-montoya-juan-diego/actions/workflows/cd-db-prod.yml)
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=juandvilla1998_iwvg-devops-villa-montoya-juan-diego&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=juandvilla1998_iwvg-devops-villa-montoya-juan-diego)
 [![Render Status](https://img.shields.io/website?url=https://iwvg-devops-villa-montoya-juan-diego.onrender.com/swagger-ui.html&up_message=online&down_message=offline&style=flat-square&label=Render)](https://iwvg-devops-villa-montoya-juan-diego.onrender.com/swagger-ui.html)
+[![AWS Lightsails](https://img.shields.io/website?url=http://51.49.174.242:10000/swagger-ui/index.html&up_message=online&down_message=offline&style=flat-square&label=AWS)](http://51.49.174.242:10000/swagger-ui/index.html)
 
 
 ### Tecnologías necesarias
