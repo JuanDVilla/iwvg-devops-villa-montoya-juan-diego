@@ -51,43 +51,51 @@ jobs:
 
       - name: 🚀 Deploy to Lightsail Server via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          ARTIFACT_NAME: ${{ env.ARTIFACT }}
+          REPO_NAME: ${{ env.REPO_LOWER }}
+          GHCR_REGISTRY: ${{ env.GHCR_URL }}
+          DB_USER: ${{ secrets.PRODUCTION_USER_DATABASE }}
+          DB_PASS: ${{ secrets.PRODUCTION_PASSWORD_DATABASE }}
+          GH_USER: ${{ github.actor }}
+          GH_PAT: ${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }}
         with:
           host: ${{ secrets.AWS_LIGHTSAIL_IP_MAIN }}
           username: ${{ secrets.AWS_LIGHTSAIL_USER_MAIN }}
           key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY }}
+          envs: ARTIFACT_NAME,REPO_NAME,GHCR_REGISTRY,DB_USER,DB_PASS,GH_USER,GH_PAT
           script: |
-            echo "${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }}" | docker login ${{ env.GHCR_URL }} -u ${{ github.actor }} --password-stdin
-            
-            docker pull ${{ env.GHCR_URL }}/${{ env.REPO_LOWER }}:latest
-            docker rm -f ${{env.ARTIFACT}} || true
+            echo "$GH_PAT" | docker login $GHCR_REGISTRY -u $GH_USER --password-stdin            
+            docker pull $GHCR_REGISTRY/$REPO_NAME:latest
+            docker rm -f $ARTIFACT_NAME || true
             docker run -d \
-              --name ${{env.ARTIFACT}} \
+              --name $ARTIFACT_NAME \
               --restart always \
-              --memory 512m \ 
-              --memory-swap 1024m \ 
-              --network master \ 
+              --memory 512m \
+              --memory-swap 1024m \
+              --network master \
               -p 10000:10000 \
               -e SPRING_PROFILES_ACTIVE=prod \
-              -e PRODUCTION_USER_DATABASE="${{secrets.PRODUCTION_USER_DATABASE}}" \
-              -e PRODUCTION_PASSWORD_DATABASE=${{secrets.PRODUCTION_PASSWORD_DATABASE}} \
-              ${{ env.GHCR_URL }}/${{ env.REPO_LOWER }}:latest
+              -e PRODUCTION_USER_DATABASE="$DB_USER" \
+              -e PRODUCTION_PASSWORD_DATABASE="$DB_PASS" \
+              $GHCR_REGISTRY/$REPO_NAME:latest
           
-            echo "⏳ Esperando a que se levante"
+            echo "⏳ Esperando a que se levante el contenedor..."
             for i in $(seq 1 6); do
               sleep 15
-              STATUS=$(docker inspect --format='{{.State.Health.Status}}' ${{ env.ARTIFACT }} 2>/dev/null)
+              STATUS=$(docker inspect --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' $ARTIFACT_NAME 2>/dev/null)
               echo "Intento $i: $STATUS"
-              [ "$STATUS" = "healthy" ] && break
+              [ "$STATUS" = "healthy" ] || [ "$STATUS" = "running" ] && break
             done
 
-            if [ "$STATUS" != "healthy" ]; then
+            if [ "$STATUS" != "healthy" ] && [ "$STATUS" != "running" ]; then
               echo "❌ Deploy fallido"
-              docker logs --tail 50 ${{ env.ARTIFACT }}
+              docker logs --tail 50 $ARTIFACT_NAME
               exit 1
             fi
 
             echo "✅ Deploy exitoso"
-            docker image prune --filter "until=12h" -f
+            docker image prune -af --filter "until=24h"
 
       - name: 🔔 Notify Slack on success
         if: success()
