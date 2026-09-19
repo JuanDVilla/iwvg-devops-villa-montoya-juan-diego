@@ -5,7 +5,9 @@ on:
       - develop
       - release-*
       - master
-
+env:
+  REPOSITORY: ${{ github.repository }}
+  
 jobs:
   devops:
     name: Tests & CodeQL & SonarCloud
