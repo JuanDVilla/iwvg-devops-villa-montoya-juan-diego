@@ -6,58 +6,50 @@ on:
 
 env:
   REPOSITORY: ${{ github.repository }}
-  GHCR_URL: ghcr.io
   DB_DOCKER: postgres-server
 
 jobs:
   deploy-prod:
-    name: Build, Push & Deploy Database to AWS Lightsail
+    name: Deploy Database to AWS Lightsail
     runs-on: ubuntu-22.04
     steps:
-      - name: 📦 Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.GHCR_URL }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }}
-
-      - name: 🏷️ Set env variables | REPO in Lowr Case from Git
-        run: |
-          echo "REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-
-      - name: 🐳 Build & Push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: .docker/Dockerfile
-          push: true
-          tags: |
-            ${{ env.GHCR_URL }}/${{ env.REPO_LOWER }}:${{ env.VERSION }}
-            ${{ env.GHCR_URL }}/${{ env.REPO_LOWER }}:latest
-
-      - name: 🚀 Deploy to Lightsail Server via SSH
+      - name: 🚀 Deploy PostgreSQL to Lightsail via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          CONTAINER_NAME: ${{ env.DB_DOCKER }}
         with:
           host: ${{ secrets.AWS_LIGHTSAIL_IP_MAIN }}
           username: ${{ secrets.AWS_LIGHTSAIL_USER_MAIN }}
           key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY }}
+          envs: CONTAINER_NAME
           script: |
-            echo "${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }}" | docker login ${{ env.GHCR_URL }} -u ${{ github.actor }} --password-stdin
-            
-            docker pull ${{ env.GHCR_URL }}/${{ env.REPO_LOWER }}:latest
-            docker rm -f ${{ env.DB_DOCKER }} || true
+            docker network create master 2>/dev/null || true
+            docker rm -f $CONTAINER_NAME || true
             docker run -d \
-              --name ${{ env.DB_DOCKER }} \
+              --name $CONTAINER_NAME \
               --restart always \
-              --memory 512m \ 
-              --memory-swap 1024m \ 
-              --network master \ 
-              -p 5432:5432 \            
+              --memory 512m \
+              --memory-swap 1024m \
+              --network master \
+              -p 5432:5432 \
               -e POSTGRES_USER=master \
               -e POSTGRES_PASSWORD=master \
               -e POSTGRES_DB=master_z8ur \
               -v postgres-data:/var/lib/postgresql/data \
               postgres:15.10
+
+            echo "⏳ Esperando a que PostgreSQL inicie..."
+            sleep 10
+
+            # Verificar que el contenedor esté corriendo
+            STATUS=$(docker inspect --format='{{.State.Status}}' $CONTAINER_NAME 2>/dev/null)
+            if [ "$STATUS" != "running" ]; then
+              echo "❌ Fallo al iniciar PostgreSQL"
+              docker logs --tail 50 $CONTAINER_NAME
+              exit 1
+            fi
+
+            echo "✅ Base de datos desplegada con éxito"
 
       - name: 🔔 Notify Slack on success
         if: success()
