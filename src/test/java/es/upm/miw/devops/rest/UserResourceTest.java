@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -36,6 +37,7 @@ class UserResourceTest {
     private UserRepository userRepository;
 
     private User sampleUser;
+    private User incompleteUser;
 
     @BeforeEach
     void setUp() {
@@ -51,11 +53,61 @@ class UserResourceTest {
         sampleUser.setPostalCode("28001");
         sampleUser.setActive(true);
         sampleUser.setRole(Role.OPERATOR);
+
+        incompleteUser = new User();
+        incompleteUser.setId(2L);
+        incompleteUser.setFirstName("Pedro");
+        incompleteUser.setFamilyName("Gómez");
+        incompleteUser.setEmail("pedro@example.com");
+        incompleteUser.setActive(true);
+        incompleteUser.setRole(Role.OPERATOR);
     }
 
-    // ==========================================
-    // PRUEBAS GET /user/{id}
-    // ==========================================
+    @Test
+    void testGetAllUsersWithoutFilter() throws Exception {
+        when(userRepository.findAll()).thenReturn(List.of(sampleUser, incompleteUser));
+
+        mockMvc.perform(get("/user"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].billable").value(true))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].billable").value(false));
+    }
+
+    @Test
+    void testGetAllUsersFilterBillableTrue() throws Exception {
+        when(userRepository.findAll()).thenReturn(List.of(sampleUser, incompleteUser));
+
+        mockMvc.perform(get("/user").param("billable", "true"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].firstName").value("Juan"))
+                .andExpect(jsonPath("$[0].billable").value(true));
+    }
+
+    @Test
+    void testGetAllUsersFilterBillableFalse() throws Exception {
+        when(userRepository.findAll()).thenReturn(List.of(sampleUser, incompleteUser));
+
+        mockMvc.perform(get("/user").param("billable", "false"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(2))
+                .andExpect(jsonPath("$[0].firstName").value("Pedro"))
+                .andExpect(jsonPath("$[0].billable").value(false));
+    }
+
+    @Test
+    void testGetAllUsersEmptyList() throws Exception {
+        when(userRepository.findAll()).thenReturn(List.of());
+
+        mockMvc.perform(get("/user"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
 
     @Test
     void testGetUserSuccess() throws Exception {
@@ -77,10 +129,6 @@ class UserResourceTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Usuario no encontrado"));
     }
-
-    // ==========================================
-    // PRUEBAS DELETE /user/{id}
-    // ==========================================
 
     @Test
     void testDeleteUserSuccess() throws Exception {
@@ -104,10 +152,6 @@ class UserResourceTest {
         verify(userRepository, never()).deleteById(anyLong());
     }
 
-    // ==========================================
-    // PRUEBAS PUT /user/{id} (Actualización Completa)
-    // ==========================================
-
     @Test
     void testUpdateUserSuccess() throws Exception {
         when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
@@ -123,8 +167,7 @@ class UserResourceTest {
                     "city": "Barcelona",
                     "province": "Barcelona",
                     "postalCode": "08001",
-                    "active": false,
-                    "role": "OPERATOR"
+                    "active": false
                 }
                 """;
 
@@ -164,10 +207,6 @@ class UserResourceTest {
 
         verify(userRepository, never()).save(any());
     }
-
-    // ==========================================
-    // PRUEBAS PUT /user/{id}/active
-    // ==========================================
 
     @Test
     void testUpdateActiveStatusSuccess() throws Exception {
@@ -212,10 +251,6 @@ class UserResourceTest {
 
         verify(userRepository, never()).save(any());
     }
-
-    // ==========================================
-    // PRUEBAS PATCH /user (Actualización en Lote + Validaciones de Rol)
-    // ==========================================
 
     @Test
     void testUpdateUsersActiveStatusBatchSuccess() throws Exception {
